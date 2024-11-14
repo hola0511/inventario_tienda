@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Inventario de Productos</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+        <a href="{{ url_for('agregar') }}" class="btn">Agregar Producto</a>
+        <ul>
+            {% for producto in inventario %}
+                <li>
+                    <strong>{{ producto.nombre }}</strong> - {{ producto.descripcion }}
+                    <div>
+                        <a href="{{ url_for('producto', index=loop.index0) }}">Ver</a> |
+                        <a href="{{ url_for('editar', index=loop.index0) }}">Editar</a> |
+                        <form action="{{ url_for('eliminar', index=loop.index0) }}" method="post" style="display:inline;">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
