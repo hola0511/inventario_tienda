@@ -8,25 +8,37 @@
 <body>
     <div class="container">
         <h1>Inventario de Productos</h1>
+
+        <form action="{{ url_for('buscar') }}" method="post">
+            <input type="text" name="query" placeholder="Buscar productos..." value="{{ query if query else '' }}">
+            <button type="submit">Buscar</button>
+        </form>
+
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="flash-message">{{ messages[0] }}</div>
             {% endif %}
         {% endwith %}
+
         <a href="{{ url_for('agregar') }}" class="btn">Agregar Producto</a>
+
         <ul>
-            {% for producto in inventario %}
-                <li>
-                    <strong>{{ producto.nombre }}</strong> - {{ producto.descripcion }}
-                    <div>
-                        <a href="{{ url_for('producto', index=loop.index0) }}">Ver</a> |
-                        <a href="{{ url_for('editar', index=loop.index0) }}">Editar</a> |
-                        <form action="{{ url_for('eliminar', index=loop.index0) }}" method="post" style="display:inline;">
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
+            {% if inventario %}
+                {% for producto in inventario %}
+                    <li>
+                        <strong>{{ producto.nombre }}</strong> - {{ producto.descripcion }} - Color: {{ producto.color }}
+                        <div>
+                            <a href="{{ url_for('producto', index=loop.index0) }}">Ver</a> |
+                            <a href="{{ url_for('editar', index=loop.index0) }}">Editar</a> |
+                            <form action="{{ url_for('eliminar', index=loop.index0) }}" method="post" style="display:inline;" onsubmit="return confirmarEliminacion();">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>No se encontraron productos para la búsqueda "{{ query }}"</li>
+            {% endif %}
         </ul>
     </div>
 </body>

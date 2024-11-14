@@ -8,6 +8,13 @@
 <body>
     <div class="container">
         <h1>Agregar Producto</h1>
+
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+                <div class="flash-message error">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
         <form action="{{ url_for('agregar') }}" method="post">
             <label>Nombre:</label>
             <input type="text" name="nombre">
@@ -20,6 +27,9 @@
 
             <label>Cantidad:</label>
             <input type="number" name="cantidad">
+
+            <label>Color:</label>
+            <input type="text" name="color">
 
             <button type="submit">Agregar</button>
         </form>

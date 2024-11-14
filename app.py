@@ -12,6 +12,11 @@ inventario = []
 def index():
     return render_template('index.html', inventario=inventario)
 
+@app.route('/buscar', methods=['GET', 'POST'])
+def buscar():
+    query = request.form.get('query', '').lower()
+    resultados = [producto for producto in inventario if query in producto['nombre'].lower() or query in producto['descripcion'].lower()]
+    return render_template('index.html', inventario=resultados, query=query)
 
 # Ruta para agregar un nuevo producto
 @app.route('/agregar', methods=['GET', 'POST'])
@@ -21,17 +26,19 @@ def agregar():
         descripcion = request.form['descripcion']
         precio = request.form['precio']
         cantidad = request.form['cantidad']
+        color = request.form['color']
 
-        # Validación de campos
-        if not (nombre and descripcion and precio and cantidad):
-            flash('Todos los campos son obligatorios.')
+        # Validación de campos obligatorios
+        if not nombre or not descripcion or not precio or not cantidad or not color:
+            flash('Por favor, complete todos los campos antes de agregar el producto.', 'error')
             return redirect(url_for('agregar'))
 
         producto = {
             'nombre': nombre,
             'descripcion': descripcion,
             'precio': float(precio),
-            'cantidad': int(cantidad)
+            'cantidad': int(cantidad),
+            'color': color
         }
         inventario.append(producto)
         flash('Producto agregado exitosamente.')
@@ -49,13 +56,12 @@ def editar(index):
         producto['descripcion'] = request.form['descripcion']
         producto['precio'] = float(request.form['precio'])
         producto['cantidad'] = int(request.form['cantidad'])
+        producto['color'] = request.form['color']
 
         flash('Producto actualizado exitosamente.')
         return redirect(url_for('index'))
 
     return render_template('editar.html', producto=producto, index=index)
-
-
 # Ruta para eliminar un producto
 @app.route('/eliminar/<int:index>', methods=['POST'])
 def eliminar(index):
