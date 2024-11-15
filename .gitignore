@@ -1,2 +1,7 @@
-.venv
-.idea
+# Entorno virtual
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.idea/
+.vscode/
