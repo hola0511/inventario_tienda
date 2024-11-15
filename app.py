@@ -19,29 +19,6 @@ def index():
     return render_template('index.html', inventario=inventario, categorias=categorias_disponibles)
 
 
-@app.route('/buscar', methods=['POST'])
-def buscar():
-    query = request.form.get('query', '').lower()
-    criterio = request.form.get('criterio', 'nombre')
-    categoria = request.form.get('categoria', '')
-
-    if criterio == 'nombre':
-        resultados = [producto for producto in inventario if query in producto['nombre'].lower()]
-    elif criterio == 'precio':
-        try:
-            precio = float(query)
-            resultados = [producto for producto in inventario if producto['precio'] == precio]
-        except ValueError:
-            flash('Por favor, ingrese un valor numérico válido para el precio.', 'error')
-            return redirect(url_for('index'))
-    elif criterio == 'categoria':
-        resultados = [producto for producto in inventario if producto['categoria'].lower() == categoria.lower()]
-    else:
-        resultados = inventario
-
-    return render_template('index.html', inventario=resultados, query=query, criterio=criterio, categoria=categoria,
-                           categorias=categorias_disponibles)
-
 @app.route('/agregar', methods=['GET', 'POST'])
 def agregar():
     if request.method == 'POST':
@@ -68,6 +45,7 @@ def agregar():
 
     return render_template('agregar.html', categorias=categorias_disponibles)
 
+
 @app.route('/editar/<int:index>', methods=['GET', 'POST'])
 def editar(index):
     producto = inventario[index]
@@ -83,6 +61,7 @@ def editar(index):
 
     return render_template('editar.html', producto=producto, categorias=categorias_disponibles, index=index)
 
+
 @app.route('/eliminar/<int:index>', methods=['POST'])
 def eliminar(index):
     del inventario[index]
@@ -96,7 +75,30 @@ def producto(index):
     return render_template('producto.html', producto=producto)
 
 
+@app.route('/buscar', methods=['POST'])
+def buscar():
+    query = request.form.get('query', '').lower()
+    criterio = request.form.get('criterio', 'nombre')
+    categoria = request.form.get('categoria', '')
+
+    if criterio == 'nombre':
+        resultados = [producto for producto in inventario if query in producto['nombre'].lower()]
+    elif criterio == 'precio':
+        try:
+            precio = float(query)
+            resultados = [producto for producto in inventario if producto['precio'] == precio]
+        except ValueError:
+            flash('Por favor, ingrese un valor numérico válido para el precio.', 'error')
+            return redirect(url_for('index'))
+    elif criterio == 'categoria':
+        resultados = [producto for producto in inventario if producto['categoria'].lower() == categoria.lower()]
+    else:
+        resultados = inventario
+
+    return render_template('index.html', inventario=resultados, query=query, criterio=criterio, categoria=categoria,
+                           categorias=categorias_disponibles)
+
+
 if __name__ == "__main__":
     from waitress import serve
     serve(app, host="0.0.0.0", port=8080)
-
