@@ -4,15 +4,15 @@ app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
 inventario = [
-    {'nombre': 'Camisa', 'descripcion': 'Camisa de algodón', 'precio': 25000.0, 'cantidad': 10,'categoria': 'Prensa superior'},
+    {'nombre': 'Camisa', 'descripcion': 'Camisa de algodón', 'precio': 25000.0, 'cantidad': 10,'categoria': 'Prenda superior'},
     {'nombre': 'Pantalon', 'descripcion': 'Pantalones de mezclilla', 'precio': 35000.0, 'cantidad': 12,'categoria': 'Prenda inferior'},
     {'nombre': 'Chaqueta', 'descripcion': 'Chaqueta de cuero', 'precio': 90000.0, 'cantidad': 5, 'categoria': 'Abrigo'},
-    {'nombre': 'Polo', 'descripcion': 'Camisa con cuello', 'precio': 45000.0, 'cantidad': 14, 'categoria': 'Prensa superior'},
+    {'nombre': 'Polo', 'descripcion': 'Camisa con cuello', 'precio': 45000.0, 'cantidad': 14, 'categoria': 'Prenda superior'},
     {'nombre': 'Buso', 'descripcion': 'Tiene gorrito', 'precio': 75000.0, 'cantidad': 8, 'categoria': 'Abrigo'},
     {'nombre': 'tenis', 'descripcion': 'Lijeros y comodos', 'precio': 250000.0, 'cantidad': 12, 'categoria': 'Calzado'}
 ]
 
-categorias_disponibles = ['Prensa superior', 'Abrigo', 'Prenda inferior', 'Calzado']
+categorias_disponibles = ['Prenda superior', 'Abrigo', 'Prenda inferior', 'Calzado']
 
 @app.route('/')
 def index():
