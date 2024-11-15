@@ -8,24 +8,39 @@
 <body>
     <div class="container">
         <h1>Editar Producto</h1>
+
+        <!-- Mostrar mensajes de error si los hay -->
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+                <div class="flash-message error">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
         <form action="{{ url_for('editar', index=index) }}" method="post">
             <label>Nombre:</label>
-            <input type="text" name="nombre" value="{{ producto.nombre }}">
+            <input type="text" name="nombre" value="{{ producto.nombre }}" required>
 
             <label>Descripción:</label>
-            <input type="text" name="descripcion" value="{{ producto.descripcion }}">
+            <input type="text" name="descripcion" value="{{ producto.descripcion }}" required>
 
             <label>Precio:</label>
-            <input type="number" name="precio" value="{{ producto.precio }}" step="0.01">
+            <input type="number" name="precio" value="{{ producto.precio }}" step="0.01" required>
 
             <label>Cantidad:</label>
-            <input type="number" name="cantidad" value="{{ producto.cantidad }}">
+            <input type="number" name="cantidad" value="{{ producto.cantidad }}" required>
 
-            <label>Color:</label>
-            <input type="text" name="color" value="{{ producto.color }}">
+            <!-- Campo de categoría -->
+            <label>Categoría:</label>
+            <select name="categoria" required>
+                {% for cat in categorias %}
+                    <option value="{{ cat }}" {% if producto.categoria == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
 
-            <button type="submit">Guardar</button>
+            <button type="submit">Guardar Cambios</button>
         </form>
+
+        <a href="{{ url_for('index') }}" class="btn">Cancelar</a>
     </div>
 </body>
 </html>

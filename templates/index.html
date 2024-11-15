@@ -4,13 +4,33 @@
     <meta charset="UTF-8">
     <title>Inventario</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function confirmarEliminacion() {
+            return confirm("¿Estás seguro de que deseas eliminar este producto?");
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Inventario de Productos</h1>
 
+        <!-- Formulario de búsqueda -->
         <form action="{{ url_for('buscar') }}" method="post">
             <input type="text" name="query" placeholder="Buscar productos..." value="{{ query if query else '' }}">
+            <select name="criterio">
+                <option value="nombre" {% if criterio == 'nombre' %}selected{% endif %}>Nombre</option>
+                <option value="precio" {% if criterio == 'precio' %}selected{% endif %}>Precio</option>
+                <option value="categoria" {% if criterio == 'categoria' %}selected{% endif %}>Categoría</option>
+            </select>
+
+            <!-- Selector de categoría -->
+            <select name="categoria">
+                <option value="">Seleccione una categoría</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat }}" {% if categoria == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
             <button type="submit">Buscar</button>
         </form>
 
@@ -26,7 +46,7 @@
             {% if inventario %}
                 {% for producto in inventario %}
                     <li>
-                        <strong>{{ producto.nombre }}</strong> - {{ producto.descripcion }} - Color: {{ producto.color }}
+                        <strong>{{ producto.nombre }}</strong> Categoría: {{ producto.categoria }} - Precio: ${{ producto.precio }}
                         <div>
                             <a href="{{ url_for('producto', index=loop.index0) }}">Ver</a> |
                             <a href="{{ url_for('editar', index=loop.index0) }}">Editar</a> |

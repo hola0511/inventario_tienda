@@ -9,6 +9,7 @@
     <div class="container">
         <h1>Agregar Producto</h1>
 
+        <!-- Mostrar mensajes de error si los hay -->
         {% with messages = get_flashed_messages(category_filter=["error"]) %}
             {% if messages %}
                 <div class="flash-message error">{{ messages[0] }}</div>
@@ -28,11 +29,17 @@
             <label>Cantidad:</label>
             <input type="number" name="cantidad">
 
-            <label>Color:</label>
-            <input type="text" name="color">
+            <label>Categoría:</label>
+            <select name="categoria">
+                {% for cat in categorias %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                {% endfor %}
+            </select>
 
             <button type="submit">Agregar</button>
         </form>
+
+        <a href="{{ url_for('index') }}" class="btn">Volver al Inventario</a>
     </div>
 </body>
 </html>
