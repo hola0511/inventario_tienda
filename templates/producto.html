@@ -11,7 +11,8 @@
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
         <p><strong>Precio:</strong> ${{ producto.precio }}</p>
         <p><strong>Cantidad disponible:</strong> {{ producto.cantidad }}</p>
-        <a href="{{ url_for('index') }}" class="btn">Volver</a>
+        <p><strong>Categoría:</strong> {{ producto.categoria }}</p>
+        <a href="{{ url_for('index') }}" class="btn">Volver al Inventario</a>
     </div>
 </body>
 </html>
